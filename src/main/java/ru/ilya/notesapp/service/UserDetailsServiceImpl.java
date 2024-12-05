@@ -1,16 +1,18 @@
-package ru.ilya.notesapp;
+package ru.ilya.notesapp.service;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
 import ru.ilya.notesapp.entity.User;
 import ru.ilya.notesapp.repository.UserRepository;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
+@Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     private final UserRepository userRepository;
@@ -33,10 +35,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     private Collection<GrantedAuthority> getAuthorities(User user) {
         Collection<GrantedAuthority> authorities = new ArrayList<>();
         switch (user.getRole()) {
-            case ROLE_USER -> {
-                authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
-
-            }
+            case ROLE_USER -> authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
             case ROLE_ADMIN -> {
                 authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
                 authorities.add(new SimpleGrantedAuthority("ROLE_USER"));

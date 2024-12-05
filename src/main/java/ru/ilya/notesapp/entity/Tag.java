@@ -3,7 +3,8 @@ package ru.ilya.notesapp.entity;
 import jakarta.persistence.*;
 
 import java.util.Date;
-import java.util.UUID;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "tags")
@@ -20,6 +21,13 @@ public class Tag {
 
     @Enumerated(EnumType.STRING)
     private Color color;
+
+    @ManyToMany(cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE
+    },
+    mappedBy = "tags")
+    private Set<Note> notes = new HashSet<>();
 
     public long getId() {
         return id;
@@ -51,5 +59,13 @@ public class Tag {
 
     public void setColor(Color color) {
         this.color = color;
+    }
+
+    public Set<Note> getNotes() {
+        return notes;
+    }
+
+    public void setNotes(Set<Note> notes) {
+        this.notes = notes;
     }
 }

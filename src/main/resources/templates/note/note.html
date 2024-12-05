@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+      lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Note</title>
+</head>
+<body>
+
+<div>
+    <a href="/notes">go back</a>
+    <div>
+        <b th:if="${note.getTags().size() > 0}">Tags:</b>
+        <div th:each="tag : ${note.getTags()}">
+            <form th:action="@{/notes/{id}/tags/{tagId}/remove(id=${note.getId()}, tagId=${tag.getId()})}" method="post">
+                <div th:text="${tag.getName()}"></div>
+                <button type="submit">remove tag</button>
+            </form>
+
+        </div>
+    </div>
+    <div>
+        <b th:if="${note.getAttachments().size() > 0}">Attachments:</b>
+        <div th:each="attachment : ${note.getAttachments()}">
+            <div th:text="${attachment.getFilename()}"></div>
+            <video th:if="${attachment.getFiletype() == T(ru.ilya.notesapp.entity.FileType).TYPE_VIDEO}" controls="controls">
+                <source th:src="@{/attachments/{id}/view(id=${attachment.getId()})}">
+            </video>
+            <img th:if="${attachment.getFiletype() == T(ru.ilya.notesapp.entity.FileType).TYPE_IMAGE}"
+                   th:src="@{/attachments/{id}/view(id=${attachment.getId()})}"
+                   alt="attachment"
+            >
+            <audio th:if="${attachment.getFiletype() == T(ru.ilya.notesapp.entity.FileType).TYPE_AUDIO}" controls="controls">
+                <source th:src="@{/attachments/{id}/view(id=${attachment.getId()})}">
+            </audio>
+        </div>
+    </div>
+    <div>
+        Title: <b th:text="${note.getTitle()}"></b>
+    </div>
+    <div>
+        Content: <b th:text="${note.getContent()}"></b>
+    </div>
+    <form th:action="@{/notes/{id}/addTag(id=${note.id})}" method="post">
+        <label>add tag:
+            <select name="selectedId">
+                <option th:each="tag : ${allTags}" th:value="${tag.getId()}" th:text="${tag.getName()}"></option>
+            </select>
+            <button type="submit">add</button>
+        </label>
+    </form>
+    <form th:action="@{/notes/{id}/addAttachment(id=${note.id})}" method="post">
+        <label>add attachment:
+            <select name="selectedId">
+                <option th:each="attachment : ${allAttachments}" th:value="${attachment.getId()}"
+                        th:text="${attachment.getFilename()}"></option>
+            </select>
+            <button type="submit">add</button>
+        </label>
+    </form>
+</div>
+
+</body>
+</html>

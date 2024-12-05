@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+      lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Tags</title>
+</head>
+<body>
+<div th:if="${tags}">
+    <h1>Tags list</h1>
+    <div>
+        <a href="/">Home</a>
+    </div>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Creation date</th>
+        </tr>
+        <tr th:each="tag : ${tags}">
+            <td th:text="${tag.getId()}"></td>
+            <td th:text="${tag.getName()}"></td>
+            <td th:text="${tag.getCreationDate()}"></td>
+            <td><a th:href="@{/tags/{id}(id=${tag.getId()})}">open</a></td>
+        </tr>
+    </table>
+
+    <a href="/tags/create">Create tag</a>
+
+
+</div>
+</body>
+</html>

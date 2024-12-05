@@ -1,0 +1,21 @@
+services:
+  db:
+    image: postgres:alpine
+    environment:
+      POSTGRES_PASSWORD: 123321
+      POSTGRES_USERNAME: postgres
+      POSTGRES_DB: notes-app
+    ports:
+      - "5432:5432"
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/notes-app
+    ports:
+      - "8080:8080"
+
+    depends_on:
+      - db

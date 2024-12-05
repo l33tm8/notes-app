@@ -2,10 +2,11 @@ package ru.ilya.notesapp.entity;
 
 import jakarta.persistence.*;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "attachment")
+@Table(name = "attachments")
 public class Attachment {
     @Id
     @GeneratedValue
@@ -20,27 +21,13 @@ public class Attachment {
     @Column
     private FileType filetype;
 
-    @ManyToOne
-    private User author;
+    @ManyToMany(cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE
+    },
+    mappedBy = "attachments")
+    private Set<Note> notes = new HashSet<>();
 
-    @ManyToOne
-    private Priority priority;
-
-    @ManyToMany
-    @JoinTable(
-            name = "notes_tags",
-            joinColumns = @JoinColumn(name = "note_id"),
-            inverseJoinColumns = @JoinColumn(name = "tag_id")
-    )
-    private Set<Tag> tags;
-
-    @ManyToMany
-    @JoinTable(
-            name = "notes_attachments",
-            joinColumns = @JoinColumn(name = "note_id"),
-            inverseJoinColumns = @JoinColumn(name = "attachment_id")
-    )
-    private Set<Attachment> attachments;
 
     public long getId() {
         return id;
@@ -74,35 +61,11 @@ public class Attachment {
         this.filetype = filetype;
     }
 
-    public User getAuthor() {
-        return author;
+    public Set<Note> getNotes() {
+        return notes;
     }
 
-    public void setAuthor(User author) {
-        this.author = author;
-    }
-
-    public Priority getPriority() {
-        return priority;
-    }
-
-    public void setPriority(Priority priority) {
-        this.priority = priority;
-    }
-
-    public Set<Tag> getTags() {
-        return tags;
-    }
-
-    public void setTags(Set<Tag> tags) {
-        this.tags = tags;
-    }
-
-    public Set<Attachment> getAttachments() {
-        return attachments;
-    }
-
-    public void setAttachments(Set<Attachment> attachments) {
-        this.attachments = attachments;
+    public void setNotes(Set<Note> notes) {
+        this.notes = notes;
     }
 }

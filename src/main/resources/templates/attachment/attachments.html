@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Attachments</title>
+</head>
+<body>
+    <h1>Attachments</h1>
+    <div>
+        <a href="/">Home</a>
+    </div>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>File name</th>
+            <th> File type</th>
+        </tr>
+        <tr th:each="attachment : ${attachments}">
+            <td th:text="${attachment.getId()}"></td>
+            <td th:text="${attachment.getFilename()}"></td>
+            <td th:text="${attachment.getFiletype()}"></td>
+            <td><a th:href="@{attachments/{id}/view(id=${attachment.getId()})}">view</a></td>
+        </tr>
+    </table>
+    <a th:href="@{/attachments/upload}">Upload attachment</a>
+</body>
+</html>

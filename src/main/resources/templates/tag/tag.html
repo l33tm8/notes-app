@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+      lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Note</title>
+</head>
+<body>
+
+<div>
+    <a href="/tags">go back</a>
+    <div>
+        Name: <b th:text="${tag.getName()}"></b>
+        Creation date: <label th:text="${tag.getCreationDate()}" />
+    </div>
+    <div>
+        Notes
+        <div th:each="note : ${tag.getNotes()}">
+            <label th:text="${note.getTitle()}" />
+            <a th:href="@{/notes/{id}(id=${note.getId()})}">view</a>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>
